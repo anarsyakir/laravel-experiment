@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\UserController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -30,6 +31,10 @@ Route::middleware([
     'verified',
 ])->group(function () {
     Route::get('/dashboard', function () {
-        return Inertia::render('Dashboard');
+        return Inertia::render('FlowbiteDashboard');
     })->name('dashboard');
+
+    Route::resources([
+        'users' => UserController::class,
+    ]);
 });
