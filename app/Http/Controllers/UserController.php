@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
+use App\Http\Resources\UserCollection;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Inertia\Inertia;
@@ -17,7 +18,7 @@ class UserController extends Controller
     public function index()
     {
         return Inertia::render('User/List', [
-            'users' => User::all()
+            'users' => new UserCollection(User::orderBy('created_at', 'desc')->paginate(5))
         ]);
     }
 
@@ -34,11 +35,6 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request, CreatesNewUsers $creator)
     {
-        // User::create([
-        //     'name' => $request->name,
-        //     'email' => $request->email,
-        //     'password' => Hash::make($request->password),
-        // ]);
         $creator->create($request->all());
 
         return to_route('users.index');

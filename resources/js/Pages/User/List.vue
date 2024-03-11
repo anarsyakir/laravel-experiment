@@ -12,6 +12,7 @@ defineProps({
 const columns = ref([
   { field: 'name', text: 'Name', action: false },
   { field: 'email', text: 'Email', action: false },
+  { field: 'created_at', text: 'Created At', action: false },
   { field: 'action', text: 'Action', action: true },
 ]);
 
@@ -23,8 +24,8 @@ const columns = ref([
             <div class="mx-auto max-w-screen-xl">
                 <div class="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
                     <Header />
-                    <Table :rows="users" :columns="columns"/>
-                    <Pagination />
+                    <Table :rows="users.data" :columns="columns"/>
+                    <Pagination :links="users.links" :meta="users.meta"/>
                 </div>
             </div>
         </section>
