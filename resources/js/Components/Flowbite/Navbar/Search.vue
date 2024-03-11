@@ -10,7 +10,7 @@ defineProps({
 
 <template>
     <form action="#" method="GET" :class="position == 'top' ? 'hidden md:block md:pl-2' : 'md:hidden mb-2'" >
-        <label for="search" class="sr-only">Search</label>
+        <label :for="id" class="sr-only">Search</label>
         <div class="relative md:w-64 md:w-96">
             <div class="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
                 <svg class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor"

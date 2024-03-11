@@ -4,8 +4,26 @@ import Tr from './Table/Tr.vue';
 
 defineProps({
     rows: Array,
-    columns: Array
+    columns: Array,
+    actions: {
+        type: Array,
+        default: []
+    }
 });
+
+const emit = defineEmits(['onEdit', 'onPreview', 'onDelete']);
+
+const onEdit = (data) => {
+    emit('onEdit', data);
+}
+
+const onPreview = (data) => {
+    emit('onPreview', data);
+}
+
+const onDelete = (data) => {
+    emit('onDelete', data);
+}
 
 </script>
 
@@ -19,7 +37,11 @@ defineProps({
                 </tr>
             </thead>
             <tbody>
-                <Tr v-for="row in rows" :key="row.id" :row="row" :columns="columns"/>
+                <Tr v-for="row in rows" :key="row.id" :row="row" :columns="columns" :actions="actions"
+                    @on-edit="onEdit"
+                    @on-preview="onPreview"
+                    @on-delete="onDelete"
+                />
             </tbody>
         </table>
     </div>

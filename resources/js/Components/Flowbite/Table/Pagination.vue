@@ -6,7 +6,20 @@ const props = defineProps({
    meta: Object 
 });
 
-console.log(props.meta);
+const reformatUrl = (url) => {
+    const queryString = window.location.search;
+    const queryParams = new URLSearchParams(queryString);
+    const queryParamsObject = {};
+    queryParams.forEach((value, key) => {
+        queryParamsObject[key] = value;
+    });
+
+    if (queryParamsObject.hasOwnProperty('search_text')){
+        return url + '&search_text=' + queryParamsObject['search_text']
+    }
+
+    return url;
+}
 
 </script>
 
@@ -21,7 +34,7 @@ console.log(props.meta);
         </span>
         <ul class="inline-flex items-stretch -space-x-px">
             <li v-for="link in meta.links">
-                <Link v-if="link.label.includes('Previous')" :href="link.url ? link.url : '#'"
+                <Link v-if="link.label.includes('Previous')" :href="link.url ? reformatUrl(link.url) : '#'"
                     :class="(!link.url ? 'opacity-25 cursor-not-allowed ' : '') + 'flex items-center justify-center h-full py-1.5 px-3 ml-0 text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'">
                     <span class="sr-only">Previous</span>
                     <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewbox="0 0 20 20"
@@ -31,12 +44,12 @@ console.log(props.meta);
                             clip-rule="evenodd" />
                     </svg>
                 </Link>
-                <Link v-else-if="link.active" :href="link.url"
+                <Link v-else-if="link.active" :href="reformatUrl(link.url)"
                     aria-current="page"
                     class="flex items-center justify-center text-sm z-10 py-2 px-3 leading-tight text-primary-600 bg-primary-50 border border-primary-300 hover:bg-primary-100 hover:text-primary-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white">
                     {{ link.label }}
                 </Link>
-                <Link v-else-if="link.label.includes('Next')" :href="link.url ? link.url : '#'"
+                <Link v-else-if="link.label.includes('Next')" :href="link.url ? reformatUrl(link.url) : '#'"
                     :class="(!link.url ? 'opacity-25 cursor-not-allowed ' : '') + 'flex items-center justify-center h-full py-1.5 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'">
                     <span class="sr-only">Next</span>
                     <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewbox="0 0 20 20"
@@ -46,7 +59,7 @@ console.log(props.meta);
                             clip-rule="evenodd" />
                     </svg>
                 </Link>
-                <Link v-else :href="link.url"
+                <Link v-else :href="reformatUrl(link.url)"
                     class="flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
                     {{ link.label }}
                 </Link>

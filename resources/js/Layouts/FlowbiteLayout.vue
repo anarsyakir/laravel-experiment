@@ -12,6 +12,10 @@ onMounted(() => {
 
 defineProps({
     title: String,
+    breadcrumb: {
+        type: Array,
+        default: []
+    }
 });
 
 const showingNavigationDropdown = ref(false);
@@ -26,7 +30,7 @@ const logout = () => {
         <Head :title="title" />
         <Navbar :user="$page.props.auth.user"/>
         <Sidebar />
-        <Main>
+        <Main :breadcrumb="breadcrumb">
             <slot />
         </Main>
     </div>
