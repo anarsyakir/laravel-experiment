@@ -50,4 +50,4 @@ defineProps({
             </div>
         </div>
     </nav>
-</template>./Navbar/ApplicationLogo.vue
+</template>

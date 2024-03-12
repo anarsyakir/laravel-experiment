@@ -38,7 +38,7 @@ const form = useForm({
     email: '',
     password: '',
     password_confirmation: '',
-    terms: false,
+    terms: true,
 });
 
 const title = ref('Create user');
@@ -113,19 +113,21 @@ const doDelete = () => {
 
 <template>
     <FlowbiteLayout title="Manage User">
-        <section class="bg-gray-50 rounded-lg dark:bg-gray-900 antialiased">
-            <div class="mx-auto max-w-screen-xl">
-                <div class="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
-                    <Header :search-text="searchText" @open-modal="openModal"/>
-                    <Table :rows="users.data" :columns="columns" :actions="actions"
-                        @on-edit="onEdit"
-                        @on-preview="onPreview"
-                        @on-delete="onDelete"
-                    />
-                    <Pagination :links="users.links" :meta="users.meta"/>
+        <div class="border sm:rounded-lg border-gray-200 dark:border-gray-600 h-auto mb-4">
+            <div class="bg-gray-50 rounded-lg dark:bg-gray-900 antialiased">
+                <div class="mx-auto max-w-screen-xl">
+                    <div class="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
+                        <Header :search-text="searchText" @open-modal="openModal"/>
+                        <Table :rows="users.data" :columns="columns" :actions="actions"
+                            @on-edit="onEdit"
+                            @on-preview="onPreview"
+                            @on-delete="onDelete"
+                        />
+                        <Pagination :links="users.links" :meta="users.meta"/>
+                    </div>
                 </div>
             </div>
-        </section>
+        </div>
     </FlowbiteLayout>
 
     <FlowbiteModal id="createUserModal" :title="title" @close="closeModal">

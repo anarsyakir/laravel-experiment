@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -34,7 +35,6 @@ Route::middleware([
         return Inertia::render('FlowbiteDashboard');
     })->name('dashboard');
 
-    Route::resources([
-        'users' => UserController::class,
-    ]);
+    Route::resource('users', UserController::class)->except(['edit', 'create', 'show']);
+    Route::get('/profile/{user?}', [ProfileController::class, 'index'])->name('profile.user');
 });

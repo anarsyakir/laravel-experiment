@@ -1,6 +1,13 @@
 <script setup>
 import { computed, useSlots } from 'vue';
 
+defineProps({
+    col: {
+        type: String,
+        default: 'sm:grid-cols-2'
+    }
+})
+
 defineEmits(['submitted']);
 
 const hasActions = computed(() => !! useSlots().actions);
@@ -8,7 +15,7 @@ const hasActions = computed(() => !! useSlots().actions);
 
 <template>
     <form @submit.prevent="$emit('submitted')">
-        <div class="grid gap-4 mb-4 sm:grid-cols-2">
+        <div :class="'grid gap-4 mb-4 ' + col">
             <slot name="form" />
         </div>
 

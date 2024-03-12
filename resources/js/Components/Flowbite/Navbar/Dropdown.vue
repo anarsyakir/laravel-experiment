@@ -32,7 +32,7 @@ const logout = () => {
             </div>
             <ul class="py-1 text-gray-700 dark:text-gray-300" aria-labelledby="dropdown">
                 <li>
-                    <Link :href="route('profile.show')">My profile</Link>
+                    <Link :href="route('profile.user')">My profile</Link>
                 </li>
             </ul>
             <!-- <ul class="py-1 text-gray-700 dark:text-gray-300" aria-labelledby="dropdown">
