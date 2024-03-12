@@ -1,6 +1,6 @@
 <script setup>
-import { ref, watch } from 'vue';
-import { Modal } from 'flowbite';
+import { ref } from 'vue';
+import { Modal, initFlowbite } from 'flowbite';
 import { useForm } from '@inertiajs/vue3';
 import FlowbiteLayout from '@/Layouts/FlowbiteLayout.vue';
 import Header from '@/Components/Flowbite/Table/Header.vue';
@@ -64,6 +64,7 @@ const closeModal = () => {
     modal.hide();
     form.reset();
     title.value = 'Create user';
+    initFlowbite();
 };
 
 const openModal = () => {
