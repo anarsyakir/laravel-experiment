@@ -32,6 +32,10 @@ const actions = ref([
     { name: 'Delete', emit: 'onDelete'},
 ]);
 
+const buttons = ref([
+    { name: 'Add user', emit: 'openModal'}
+]);
+
 const form = useForm({
     id: '',
     name: '',
@@ -115,9 +119,9 @@ const doDelete = () => {
     <FlowbiteLayout title="Manage User">
         <div class="border sm:rounded-lg border-gray-200 dark:border-gray-600 h-auto mb-4">
             <div class="bg-gray-50 rounded-lg dark:bg-gray-900 antialiased">
-                <div class="mx-auto max-w-screen-xl">
+                <div class="mx-auto">
                     <div class="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
-                        <Header :search-text="searchText" @open-modal="openModal"/>
+                        <Header :search-text="searchText" :buttons="buttons" @open-modal="openModal"/>
                         <Table :rows="users.data" :columns="columns" :actions="actions"
                             @on-edit="onEdit"
                             @on-preview="onPreview"

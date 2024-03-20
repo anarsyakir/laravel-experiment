@@ -34,6 +34,8 @@ const onDelete = (data) => {
                 @onEdit="onEdit" 
                 @onPreview="onPreview" 
                 @onDelete="onDelete"/>
+            <span v-else-if="Array.isArray(column.field) && column.field.length == 2">{{ row[column.field[0]][column.field[1]] }}</span>
+            <span v-else-if="Array.isArray(column.field) && column.field.length == 3">{{ row[column.field[0]][column.field[1]][column.field[2]] }}</span>
             <span v-else>{{ row[column.field] }}</span>
         </Td>
     </tr>

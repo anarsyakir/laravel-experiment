@@ -26,13 +26,16 @@ const reformatUrl = (url) => {
 <template>
     <nav class="flex flex-col md:flex-row justify-between items-start md:items-center space-y-3 md:space-y-0 p-4"
         aria-label="Table navigation">
-        <span class="text-sm font-normal text-gray-500 dark:text-gray-400">
+        <span v-if="meta.from" class="text-sm font-normal text-gray-500 dark:text-gray-400">
             Showing
             <span class="font-semibold text-gray-900 dark:text-white">{{ meta.from + '-' + meta.to }}</span>
             of
             <span class="font-semibold text-gray-900 dark:text-white">{{ meta.total }}</span>
         </span>
-        <ul class="inline-flex items-stretch -space-x-px">
+        <span v-else class="text-sm font-normal text-gray-500 dark:text-gray-400">
+            No data to show
+        </span>
+        <ul v-if="meta.from" class="inline-flex items-stretch -space-x-px">
             <li v-for="link in meta.links">
                 <Link v-if="link.label.includes('Previous')" :href="link.url ? reformatUrl(link.url) : '#'"
                     :class="(!link.url ? 'opacity-25 cursor-not-allowed ' : '') + 'flex items-center justify-center h-full py-1.5 px-3 ml-0 text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'">

@@ -1,7 +1,10 @@
 <?php
 
+use App\Http\Controllers\ApplicantController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\VacancyController;
+use App\Models\Applicant;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -36,5 +39,7 @@ Route::middleware([
     })->name('dashboard');
 
     Route::resource('users', UserController::class)->except(['edit', 'create', 'show']);
+    Route::resource('vacancies', VacancyController::class)->except(['edit', 'create']);
+    Route::resource('applicants', ApplicantController::class)->except(['edit', 'create']);
     Route::get('/profile/{user?}', [ProfileController::class, 'index'])->name('profile.user');
 });
