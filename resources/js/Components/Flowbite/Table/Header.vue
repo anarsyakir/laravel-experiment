@@ -27,7 +27,7 @@ const props = defineProps({
     }
 });
 
-const emit = defineEmits(['openModal']);
+const emit = defineEmits(['openModal', 'onAdd']);
 
 const searchInput = ref(null);
 

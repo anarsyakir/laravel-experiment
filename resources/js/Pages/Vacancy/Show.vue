@@ -3,14 +3,21 @@
 import Card from '@/Components/Flowbite/Card.vue';
 import PrimaryButton from '@/Components/Flowbite/Button/Primary.vue';
 import FlowbiteLayout from '@/Layouts/FlowbiteLayout.vue';
+import { route } from 'vendor/tightenco/ziggy/src/js';
 
 const props = defineProps({
     vacancy: Object
 });
 
+const breadcrumb = [
+    {name: "Home", href:route('dashboard')},
+    {name: "Vacancy", href:route('vacancies.index')},
+    {name: "Show", href:null},
+];
+
 </script>
 <template>
-    <FlowbiteLayout title="Vacancy Detail">
+    <FlowbiteLayout title="Vacancy Detail" :breadcrumb="breadcrumb">
         <Card class="p-4">
             <template #content>
                 <div class="mx-auto">

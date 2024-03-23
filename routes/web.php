@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ApplicantController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ReportingController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VacancyController;
 use App\Models\Applicant;
@@ -39,7 +40,11 @@ Route::middleware([
     })->name('dashboard');
 
     Route::resource('users', UserController::class)->except(['edit', 'create', 'show']);
-    Route::resource('vacancies', VacancyController::class)->except(['edit', 'create']);
+    Route::resource('vacancies', VacancyController::class);
     Route::resource('applicants', ApplicantController::class)->except(['edit', 'create']);
     Route::get('/profile/{user?}', [ProfileController::class, 'index'])->name('profile.user');
+    Route::get('/vacancy/admin', [VacancyController::class, 'admin'])->name('vacancy.admin');
+    Route::get('/applicant/admin/{vacancy}', [ApplicantController::class, 'admin'])->name('applicant.admin');
+    Route::get('/applicant/show/{applicant}', [ApplicantController::class, 'showAdmin'])->name('applicant.show.admin');
+    Route::get('/reporting', [ReportingController::class, 'index'])->name('report.index');
 });

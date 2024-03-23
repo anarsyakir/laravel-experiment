@@ -14,18 +14,11 @@ const props = defineProps({
 
 const breadcrumb = [
     {name: "Home", href:route('dashboard')},
-    {name: "Your Application", href:null},
+    {name: "Reporting", href:null},
 ];
 
 const columns = ref([
-    { field: ['vacancy', 'company', 'name'], text: 'Company Name', action: false },
-    { field: ['vacancy', 'position', 'name'], text: 'Position', action: false },
-    { field: 'created_at', text: 'Created At', action: false },
-    { field: 'action', text: 'Action', action: true },
-]);
-
-const actions = ref([
-    { name: 'View Status', emit: 'onPreview', href: 'applicants.show'}
+    { field: ['user', 'name'], text: 'Name', action: false },
 ]);
 
 const onPreview = (data) => {
@@ -34,13 +27,13 @@ const onPreview = (data) => {
 
 </script>
 <template>
-    <FlowbiteLayout title="Your applications" :breadcrumb="breadcrumb">
+    <FlowbiteLayout title="Reporting" :breadcrumb="breadcrumb">
         <div class="border sm:rounded-lg border-gray-200 dark:border-gray-600 h-auto mb-4">
             <div class="bg-gray-50 rounded-lg dark:bg-gray-900 antialiased">
                 <div class="mx-auto">
                     <div class="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
                         <Header />
-                        <Table :rows="applications.data" :columns="columns" :actions="actions"
+                        <Table :rows="applications.data" :columns="columns"
                             @on-preview="onPreview"
                         />
                         <Pagination :links="applications.links" :meta="applications.meta"/>

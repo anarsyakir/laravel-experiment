@@ -22,7 +22,11 @@ class VacancyResource extends JsonResource
             'description' => $this->description,
             'company' => new CompanyResource($this->company),
             'position' => new PositionResource($this->position),
-            'publishedCriteria' => $this->publishedCriteria()
+            'publishedCriteria' => $this->publishedCriteria(),
+            'created_at' => $this->created_at,
+            'start_at' => $this->start_at,
+            'end_at' => $this->end_at,
+            'max_applicant' => $this->max_applicant,
         ];
     }
 }

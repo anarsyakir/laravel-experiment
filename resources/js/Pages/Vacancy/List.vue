@@ -10,9 +10,14 @@ const props = defineProps({
     vacancies: Object
 });
 
+const breadcrumb = [
+    {name: "Home", href:route('dashboard')},
+    {name: "Vacancy", href:null},
+];
+
 </script>
 <template>
-    <FlowbiteLayout title="Vacancy List">
+    <FlowbiteLayout title="Vacancy List" :breadcrumb="breadcrumb">
         <Header/>
         <Card v-for="vacancy in vacancies.data" :title="vacancy.position.name" :link="route('vacancies.show', { vacancy : vacancy.id})" class="p-4">
             <template #content>

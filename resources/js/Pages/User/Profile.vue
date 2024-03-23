@@ -14,6 +14,11 @@ const props = defineProps({
     user: Object
 });
 
+const breadcrumb = [
+    {name: "Home", href:route('dashboard')},
+    {name: "Manage Users", href:null},
+];
+
 const form = useForm({
     id: '',
     name: props.user.name,
@@ -60,7 +65,7 @@ const formExperience = useForm({
 </script>
 
 <template>
-    <FlowbiteLayout title="Manage User">
+    <FlowbiteLayout title="Manage User" :breadcrumb="breadcrumb">
         <div class="grid grid-cols-12 gap-4">
             <div class="col-span-3">
                 <div class="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">

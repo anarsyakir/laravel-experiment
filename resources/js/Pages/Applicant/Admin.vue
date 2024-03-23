@@ -1,12 +1,12 @@
 <script setup>
 import { ref } from 'vue';
-import { router } from '@inertiajs/vue3'
-import Card from '@/Components/Flowbite/Card.vue';
+import { useForm, router } from '@inertiajs/vue3'
 import PrimaryButton from '@/Components/Flowbite/Button/Primary.vue';
 import FlowbiteLayout from '@/Layouts/FlowbiteLayout.vue';
-import Header from '@/Components/Flowbite/Table/Header.vue';
+import Header from '@/Components/Flowbite/Header.vue';
 import Table from '@/Components/Flowbite/Table.vue';
 import Pagination from '@/Components/Flowbite/Table/Pagination.vue';
+import FlowbiteModal from '@/Components/Flowbite/Modal.vue';
 
 const props = defineProps({
     applications: Object
@@ -14,27 +14,27 @@ const props = defineProps({
 
 const breadcrumb = [
     {name: "Home", href:route('dashboard')},
-    {name: "Your Application", href:null},
+    {name: "Manage Vacancy", href:route('vacancy.admin')},
+    {name: "Applicants", href:null},
 ];
 
 const columns = ref([
-    { field: ['vacancy', 'company', 'name'], text: 'Company Name', action: false },
-    { field: ['vacancy', 'position', 'name'], text: 'Position', action: false },
-    { field: 'created_at', text: 'Created At', action: false },
+    { field: ['user', 'name'], text: 'Applicant Name', action: false },
+    { field: 'created_at', text: 'Applied At', action: false },
     { field: 'action', text: 'Action', action: true },
 ]);
 
 const actions = ref([
-    { name: 'View Status', emit: 'onPreview', href: 'applicants.show'}
+    { name: 'Review Applicant', emit: 'onPreview'},
 ]);
 
 const onPreview = (data) => {
-    router.get(route('applicants.show', { applicant : data.id}));
+    router.get(route('applicant.show.admin', { applicant : data.id}));
 }
 
 </script>
 <template>
-    <FlowbiteLayout title="Your applications" :breadcrumb="breadcrumb">
+    <FlowbiteLayout title="Applicant List" :breadcrumb="breadcrumb">
         <div class="border sm:rounded-lg border-gray-200 dark:border-gray-600 h-auto mb-4">
             <div class="bg-gray-50 rounded-lg dark:bg-gray-900 antialiased">
                 <div class="mx-auto">

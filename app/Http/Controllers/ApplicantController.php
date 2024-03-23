@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateApplicantRequest;
 use App\Http\Resources\ApplicantCollection;
 use App\Http\Resources\ApplicantResource;
 use App\Models\Applicant;
+use App\Models\Vacancy;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -24,12 +25,13 @@ class ApplicantController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function admin(Request $request, Vacancy $vacancy)
     {
-        //
+        return Inertia::render('Applicant/Admin', [
+            'applications' => new ApplicantCollection(
+                Applicant::where('vacancy_id', $vacancy->id)->paginate(5)
+            )
+        ]);
     }
 
     /**
@@ -50,12 +52,11 @@ class ApplicantController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Applicant $applicant)
+    public function showAdmin(Applicant $applicant)
     {
-        //
+        return Inertia::render('Applicant/Show', [
+            'applicant' => new ApplicantResource($applicant)
+        ]);
     }
 
     /**

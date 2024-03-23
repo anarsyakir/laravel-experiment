@@ -11,7 +11,7 @@ class UpdateVacancyRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,13 @@ class UpdateVacancyRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'id' => 'required',
+            'company_id' => 'required',
+            'position_id' => 'required',
+            'description' => 'required',
+            'max_applicant' => 'required',
+            'start_at' => 'date_format:Y-m-d',
+            'end_at' => 'date_format:Y-m-d',
         ];
     }
 }

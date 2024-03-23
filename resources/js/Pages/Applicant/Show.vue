@@ -8,7 +8,11 @@ const props = defineProps({
     applicant: Object
 });
 
-console.log(props.applicant);
+const breadcrumb = [
+    {name: "Home", href:route('dashboard')},
+    {name: "Applicant", href:route('applicants.index')},
+    {name: "Show", href:null},
+];
 
 const getClass = (index, arrLength) => {
     if(index == 0){
@@ -22,7 +26,7 @@ const getClass = (index, arrLength) => {
 
 </script>
 <template>
-    <FlowbiteLayout title="Vacancy Detail">
+    <FlowbiteLayout title="Applicant" :breadcrumb="breadcrumb">
         <Card class="p-4">
             <template #content>
                 <div class="mx-auto">
@@ -45,6 +49,17 @@ const getClass = (index, arrLength) => {
                         </li> -->
                     </ol>
                 </div>
+                <hr class="h-px mb-3 mt-4 bg-gray-200 border-0 dark:bg-gray-700">
+                <dl class="text-gray-900 dark:text-white">
+                    <div class="grid grid-cols-6 gap-4 pb-1">
+                        <dt class="text-sm font-semibold">Ijazah</dt>
+                        <dd class="mb-1 text-gray-500 md:text-sm dark:text-gray-400 col-span-5">Passed</dd>
+                    </div>
+                    <div class="grid grid-cols-6 gap-4 pb-1">
+                        <dt class="text-sm font-semibold">SKCK</dt>
+                        <dd class="mb-1 text-gray-500 md:text-sm dark:text-gray-400 col-span-5">Not Pass</dd>
+                    </div>
+                </dl>
             </template>
         </Card>
     </FlowbiteLayout>

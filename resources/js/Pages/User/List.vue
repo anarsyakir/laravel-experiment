@@ -19,6 +19,11 @@ defineProps({
     searchText: String
 });
 
+const breadcrumb = [
+    {name: "Home", href:route('dashboard')},
+    {name: "Manage Users", href:null},
+];
+
 const columns = ref([
   { field: 'name', text: 'Name', action: false },
   { field: 'email', text: 'Email', action: false },
@@ -116,7 +121,7 @@ const doDelete = () => {
 </script>
 
 <template>
-    <FlowbiteLayout title="Manage User">
+    <FlowbiteLayout title="Manage User" :breadcrumb="breadcrumb">
         <div class="border sm:rounded-lg border-gray-200 dark:border-gray-600 h-auto mb-4">
             <div class="bg-gray-50 rounded-lg dark:bg-gray-900 antialiased">
                 <div class="mx-auto">

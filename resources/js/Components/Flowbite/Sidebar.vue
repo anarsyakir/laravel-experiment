@@ -2,6 +2,10 @@
 <script setup>
 import Search from './Navbar/Search.vue';
 import Link from './Sidebar/Link.vue';
+import Users from './Icon/Users.vue';
+import Briefcase from './Icon/Briefcase.vue';
+import Applicant from './Icon/Applicant.vue';
+import Report from './Icon/Report.vue';
 import LinkDropdown from './Sidebar/LinkDropdown.vue';
 </script>
 <template>
@@ -11,7 +15,7 @@ import LinkDropdown from './Sidebar/LinkDropdown.vue';
         <div class="overflow-y-auto py-5 px-3 h-full bg-white dark:bg-gray-800">
             <Search id="side-search" position="side"/>
             <ul class="space-y-2">
-                <Link :href="route('dashboard')" text="Dashboard">
+                <Link :href="route('dashboard')" text="Dashboard" :active="route().current('dashboard')">
                     <svg aria-hidden="true"
                         class="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
                         fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -19,29 +23,20 @@ import LinkDropdown from './Sidebar/LinkDropdown.vue';
                         <path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z"></path>
                     </svg>
                 </Link>
-                <Link :href="route('users.index')" text="Manage Users">
-                    <svg aria-hidden="true"
-                        class="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
-                        fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z"></path>
-                        <path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z"></path>
-                    </svg>
+                <Link :href="route('users.index')" text="Manage Users" :active="route().current('users.index')">
+                    <Users/>
                 </Link>
-                <Link :href="route('vacancies.index')" text="Vacancies">
-                    <svg aria-hidden="true"
-                        class="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
-                        fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z"></path>
-                        <path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z"></path>
-                    </svg>
+                <Link :href="route('vacancies.index')" text="Vacancies" :active="route().current('vacancies.index')">
+                    <Briefcase/>
                 </Link>
-                <Link :href="route('applicants.index')" text="Your Applications">
-                    <svg aria-hidden="true"
-                        class="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
-                        fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z"></path>
-                        <path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z"></path>
-                    </svg>
+                <Link :href="route('vacancy.admin')" text="Manage Vacancies" :active="route().current('vacancy.admin')">
+                    <Briefcase/>
+                </Link>
+                <Link :href="route('applicants.index')" text="Your Applications" :active="route().current('applicants.index')">
+                    <Applicant/>
+                </Link>
+                <Link :href="route('report.index')" text="Reporting" :active="route().current('report.index')">
+                    <Report/>
                 </Link>
                 <!-- <LinkDropdown text="Pages">
                     <template #icon>
