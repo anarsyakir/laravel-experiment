@@ -29,7 +29,7 @@ import LinkDropdown from './Sidebar/LinkDropdown.vue';
                 <Link :href="route('vacancies.index')" text="Vacancies" :active="route().current('vacancies.index')">
                     <Briefcase/>
                 </Link>
-                <Link :href="route('vacancy.admin')" text="Manage Vacancies" :active="route().current('vacancy.admin')">
+                <Link :href="route('vacancy.admin')" text="Manage Vacancies" :active="route().current('vacancy.admin') || route().current('vacancies.edit') || route().current('vacancies.create')">
                     <Briefcase/>
                 </Link>
                 <Link :href="route('applicants.index')" text="Your Applications" :active="route().current('applicants.index')">

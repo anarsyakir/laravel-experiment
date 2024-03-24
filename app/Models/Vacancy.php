@@ -66,14 +66,14 @@ class Vacancy extends Model
         );
     }
 
-    protected function startAt(): Attribute
+    protected function startAt()
     {
         return Attribute::make(
             get: fn (string $value) => Carbon::parse($value)->tz(config('app.timezone'))->format('Y-m-d H:i:s'),
         );
     }
 
-    protected function endAt(): Attribute
+    protected function endAt()
     {
         return Attribute::make(
             get: fn (string $value) => Carbon::parse($value)->tz(config('app.timezone'))->format('Y-m-d H:i:s'),

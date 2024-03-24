@@ -15,6 +15,11 @@ class VacancyAssessmentResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            'id' => $this->id,
+            'sequence' => $this->sequence,
+            'treshold' => $this->treshold,
+            'weight' => $this->weight,
+            'count_by_average' => $this->count_by_average,
             'assessment' => new AssessmentResource($this->assessment),
             'criterias' => AssessmentCriteriaResource::collection($this->criterias),
         ];

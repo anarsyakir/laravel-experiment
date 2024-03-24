@@ -15,8 +15,6 @@ const props = defineProps({
     vacancies: Object
 });
 
-console.log(props.vacancies);
-
 const breadcrumb = [
     {name: "Home", href:route('dashboard')},
     {name: "Manage Vacancy", href:null},

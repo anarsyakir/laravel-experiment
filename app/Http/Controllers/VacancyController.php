@@ -4,11 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreVacancyRequest;
 use App\Http\Requests\UpdateVacancyRequest;
+use App\Http\Resources\AssessmentResource;
 use App\Http\Resources\CompanyResource;
+use App\Http\Resources\CriteriaResource;
 use App\Http\Resources\PositionResource;
 use App\Http\Resources\VacancyCollection;
 use App\Http\Resources\VacancyResource;
+use App\Models\Assessment;
 use App\Models\Company;
+use App\Models\Criteria;
 use App\Models\Position;
 use App\Models\Vacancy;
 use Inertia\Inertia;
@@ -70,7 +74,9 @@ class VacancyController extends Controller
         return Inertia::render('Vacancy/CreateOrEdit', [
             'companies' => CompanyResource::collection(Company::all()),
             'positions' => PositionResource::collection(Position::all()),
-            'vacancy' => new VacancyResource($vacancy)
+            'vacancy' => new VacancyResource($vacancy),
+            'assessments' => AssessmentResource::collection(Assessment::all()),
+            'criterias' => CriteriaResource::collection(Criteria::all())
         ]);
     }
 

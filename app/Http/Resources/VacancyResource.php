@@ -27,6 +27,7 @@ class VacancyResource extends JsonResource
             'start_at' => $this->start_at,
             'end_at' => $this->end_at,
             'max_applicant' => $this->max_applicant,
+            'assessments' => new VacancyAssessmentCollection($this->assessments)
         ];
     }
 }

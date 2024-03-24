@@ -11,7 +11,7 @@ class StoreVacancyAssessmentRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,12 @@ class StoreVacancyAssessmentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'vacancy_id' => 'required',
+            'assessment_id' => 'required',
+            'sequence' => 'required|numeric',
+            'treshold' => 'required|numeric',
+            'weight' => 'required|numeric',
+            'count_by_average' => 'boolean',
         ];
     }
 }

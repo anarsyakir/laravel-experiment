@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreVacancyAssessmentRequest;
 use App\Http\Requests\UpdateVacancyAssessmentRequest;
+use App\Models\Vacancy;
 use App\Models\VacancyAssessment;
 
 class VacancyAssessmentController extends Controller
@@ -29,7 +30,11 @@ class VacancyAssessmentController extends Controller
      */
     public function store(StoreVacancyAssessmentRequest $request)
     {
-        //
+        $vacancyAssessment = VacancyAssessment::create($request->validated());
+
+        $vacancy = Vacancy::find($vacancyAssessment->vacancy_id);
+
+        return to_route('vacancies.edit', ['vacancy' => $vacancy]);
     }
 
     /**
@@ -53,7 +58,10 @@ class VacancyAssessmentController extends Controller
      */
     public function update(UpdateVacancyAssessmentRequest $request, VacancyAssessment $vacancyAssessment)
     {
-        //
+        $vacancyAssessment->update($request->validated());
+        $vacancy = Vacancy::find($vacancyAssessment->vacancy_id);
+
+        return to_route('vacancies.edit', ['vacancy' => $vacancy]);
     }
 
     /**
