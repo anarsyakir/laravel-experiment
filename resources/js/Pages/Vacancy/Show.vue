@@ -3,7 +3,6 @@
 import Card from '@/Components/Flowbite/Card.vue';
 import PrimaryButton from '@/Components/Flowbite/Button/Primary.vue';
 import FlowbiteLayout from '@/Layouts/FlowbiteLayout.vue';
-import { route } from 'vendor/tightenco/ziggy/src/js';
 
 const props = defineProps({
     vacancy: Object

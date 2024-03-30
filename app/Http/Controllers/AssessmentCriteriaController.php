@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateAssessmentCriteriaRequest;
 use App\Models\AssessmentCriteria;
 use App\Models\Vacancy;
 use App\Models\VacancyAssessment;
+use Illuminate\Database\Eloquent\Casts\Json;
 
 class AssessmentCriteriaController extends Controller
 {
@@ -31,7 +32,11 @@ class AssessmentCriteriaController extends Controller
      */
     public function store(StoreAssessmentCriteriaRequest $request)
     {
-        $assessmentCriteria = AssessmentCriteria::create($request->validated());
+        $data = $request->validated();
+
+        $data['reference'] = count($data['reference']) > 0 ? Json::encode($data['reference']) : null;
+
+        $assessmentCriteria = AssessmentCriteria::create($data);
 
         $vacancyAssessment = VacancyAssessment::find($assessmentCriteria->vacancy_assessment_id);
 
@@ -61,7 +66,11 @@ class AssessmentCriteriaController extends Controller
      */
     public function update(UpdateAssessmentCriteriaRequest $request, AssessmentCriteria $assessmentCriteria)
     {
-        $assessmentCriteria->update($request->validated());
+        $data = $request->validated();
+
+        $data['reference'] = count($data['reference']) > 0 ? Json::encode($data['reference']) : null;
+
+        $assessmentCriteria->update($data);
         $vacancyAssessment = VacancyAssessment::find($assessmentCriteria->vacancy_assessment_id);
         $vacancy = Vacancy::find($vacancyAssessment->vacancy_id);
 

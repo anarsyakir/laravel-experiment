@@ -21,6 +21,7 @@ return new class extends Migration
             $table->integer('max_applicant')->nullable();
             $table->timestamp('start_at')->nullable();
             $table->timestamp('end_at')->nullable();
+            $table->integer('status')->default(0);
             $table->timestamps();
             $table->softDeletes();
         });

@@ -25,6 +25,7 @@ const columns = ref([
     { field: ['company', 'name'], text: 'Company Name', action: false },
     { field: ['position', 'name'], text: 'Position', action: false },
     { field: 'created_at', text: 'Created At', action: false },
+    { field: 'status', text: 'Status', action: false },
     { field: 'action', text: 'Action', action: true },
 ]);
 

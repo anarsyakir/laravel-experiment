@@ -27,11 +27,12 @@ class StoreAssessmentCriteriaRequest extends FormRequest
             'vacancy_assessment_id' => 'required',
             'criteria_id' => [
                 'required',
-                Rule::unique('assessment_criterias')->ignore($this->id)->where(fn (Builder $query) => $query->where('vacancy_assessment_id', $this->vacancy_assessment_id))
+                Rule::unique('assessment_criterias')->ignore($this->id)->where(fn (Builder $query) => $query->where('vacancy_assessment_id', $this->vacancy_assessment_id)->where('deleted_at', '=', null))
             ],
-            'treshold' => 'required|numeric',
-            'weight' => 'required|numeric',
+            'treshold' => 'required|numeric|min:0|max:100',
+            'weight' => 'required|numeric|min:0|max:100',
             'publish' => 'boolean',
+            'reference' => 'array',
         ];
     }
 }

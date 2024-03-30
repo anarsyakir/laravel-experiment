@@ -26,6 +26,7 @@ const form = useForm({
     max_applicant: '',
     start_at: '',
     end_at: '',
+    status: '',
 });
 
 const start_at = ref(null);
@@ -39,6 +40,7 @@ if(props.vacancy){
     form.max_applicant = props.vacancy.max_applicant?.toString();
     form.start_at = props.vacancy.start_at;
     form.end_at = props.vacancy.end_at;
+    form.status = ''+props.vacancy.status_code;
 }
 
 const submit = () => {
@@ -138,6 +140,19 @@ onMounted(() => {
                     autofocus
                 />
                 <InputError class="mt-2" :message="form.errors.end_at" />
+            </div>
+            <div>
+                <InputLabel for="status" value="Status" />
+                <SelectInput
+                    id="status"
+                    v-model="form.status"
+                >
+                    <option v-if="vacancy && vacancy.status_code === 0" value="0" selected>Draft</option>
+                    <option v-else value="0">Draft</option>
+                    <option v-if="vacancy && vacancy.status_code === 1" value="1" selected>Published</option>
+                    <option v-else value="1">Published</option>
+                </SelectInput>
+                <InputError class="mt-2" :message="form.errors.status" />
             </div>
             <div class="col-span-3">
                 <InputLabel for="description" value="Description" />

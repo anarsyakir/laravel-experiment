@@ -2,6 +2,7 @@
 import { onMounted, ref, watch } from 'vue';
 import { initFlowbite, initDropdowns } from 'flowbite';
 import { useForm } from '@inertiajs/vue3';
+import axios from 'axios';
 import Form from '@/Components/Flowbite/Form.vue';
 import TextInput from '@/Components/Flowbite/Form/TextInput.vue';
 import InputLabel from '@/Components/Flowbite/Form/InputLabel.vue';
@@ -18,7 +19,28 @@ const props = defineProps({
     criterias: Object,
 });
 
-console.log(props.vacancy);
+const reference = ref([]);
+
+watch(reference, async (newReference, oldReference) => {
+    const referenceOption = document.getElementById('reference');
+    while (referenceOption.options.length > 0) {
+        referenceOption.remove(0);
+    }
+    if(newReference.length > 0){
+        referenceOption.parentElement.classList.remove('hidden');
+        for(var i = 0; i < newReference.length; i++){
+            const option = document.createElement("option");
+            option.text = newReference[i];
+            option.value = newReference[i];
+            if(form.reference.includes(option.value)){
+                option.selected = true;
+            }
+            referenceOption.add(option);
+        }
+    } else {
+        referenceOption.parentElement.classList.add('hidden');
+    }
+})
 
 const emit = defineEmits(['alertSuccess', 'nextStep', 'prevStep']);
 
@@ -29,7 +51,11 @@ const form = useForm({
     treshold: '',
     weight: '',
     publish: '',
-    reference: '',
+    reference: [],
+});
+
+const formVacancy = useForm({
+    id: props.vacancy.id
 });
 
 const submit = () => {
@@ -54,9 +80,16 @@ const submit = () => {
     }
 };
 
+const publishVacancy = () => {
+    formVacancy.put(route('vacancies.publish', { vacancy : formVacancy.id}), {
+        onSuccess: () => onSuccess(),
+    });
+}
+
 const onSuccess = () => {
     emit('alertSuccess');
     form.reset();
+    formVacancy.reset();
     resetSelectNCheckbox();
     initDropdowns();
 }
@@ -73,7 +106,8 @@ const columns = ref([
     { field: ['criteria', 'name'], text: 'Criteria Name', action: false },
     { field: 'treshold', text: 'Treshold', action: false },
     { field: 'weight', text: 'Weight', action: false },
-    { field: 'publish', text: 'publish', action: false },
+    { field: 'publish', text: 'Published', action: false },
+    { field: 'reference', text: 'Reference', action: false },
     { field: 'action', text: 'Action', action: true },
 ]);
 
@@ -94,16 +128,34 @@ const onAssessmentChange = (e) => {
     element.classList.remove('hidden');
 }
 
-const resetSelectNCheckbox = () => {
-    const children = document.getElementById('vassessment').children;
-    for (var i = 0; i < children.length; i++) {
-        if(children[i].value == '') {
-            children[i].setAttribute('selected', true);
-        } else {
-            children[i].removeAttribute('selected');
+const onCriteriaChange = (e) => {
+    const selectedOption = e.target.options[e.target.selectedIndex];
+    const name = selectedOption.getAttribute('data-reference');
+    if(name){
+        axios.post(route('reference', {name: name}))
+        .then((response) => {
+            reference.value = response.data;
+        });
+    } else {
+        reference.value = [];
+        form.reference = [];
+    }
+}
+
+const onReferenceChange = (e) => {
+    form.reference = [];
+    const options = e.target.options;
+    for (var i=0; i<options.length; i++) {
+        const opt = options[i];
+        if (opt.selected) {
+            form.reference.push(opt.value);
         }
     }
-    const childrenCriteria = document.getElementById('criteria').children;
+}
+
+const resetSelectNCheckbox = () => {
+    const element = document.getElementById('criteria');
+    const childrenCriteria = element.children;
     for (var i = 0; i < childrenCriteria.length; i++) {
         if(childrenCriteria[i].value == '') {
             childrenCriteria[i].setAttribute('selected', true);
@@ -112,27 +164,24 @@ const resetSelectNCheckbox = () => {
         }
     }
 
+    const event = new Event('change');
+    element.dispatchEvent(event);
+
     const checkbox = document.getElementById('publish');
     checkbox.checked = false;
 }
 
 const onEdit = (data) => {
-    console.log(data);
     form.id = '' + data.id;
     form.vacancy_assessment_id = data.vacancy_assessment_id;
     form.criteria_id = data.criteria.id;
     form.treshold  = '' + data.treshold;
     form.weight = '' + data.weight;
     form.publish = data.publish;
-    const children = document.getElementById('vassessment').children;
-    for (var i = 0; i < children.length; i++) {
-        if(children[i].value == data.vacancy_assessment_id) {
-            children[i].setAttribute('selected', true);
-        } else {
-            children[i].removeAttribute('selected');
-        }
-    }
-    const childrenCriteria = document.getElementById('criteria').children;
+    form.reference = data.reference;
+    
+    const element = document.getElementById('criteria');
+    const childrenCriteria = element.children;
     for (var i = 0; i < childrenCriteria.length; i++) {
         if(childrenCriteria[i].value == data.criteria.id) {
             childrenCriteria[i].setAttribute('selected', true);
@@ -140,6 +189,10 @@ const onEdit = (data) => {
             childrenCriteria[i].removeAttribute('selected');
         }
     }
+
+    const event = new Event('change');
+    element.dispatchEvent(event);
+
     const checkbox = document.getElementById('publish');
     checkbox.checked = data.publish == 1 ? true : false;
 }
@@ -206,10 +259,11 @@ onMounted(() => {
                 <SelectInput
                     id="criteria"
                     v-model="form.criteria_id"
+                    @change="onCriteriaChange"
                 >
                     <option value="">Choose criteria</option>
                     <template v-for="criteria in criterias">
-                        <option :value="criteria.id">{{ criteria.name }}</option>
+                        <option :data-reference="criteria.reference" :value="criteria.id">{{ criteria.name }}</option>
                     </template>
                 </SelectInput>
                 <InputError class="mt-2" :message="form.errors.vacancy_assessment_id" />
@@ -255,6 +309,13 @@ onMounted(() => {
                 <InputLabel value="&nbsp;"/>
                 <PrimaryButton class="w-full" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">Save</PrimaryButton>
             </div>
+            <div class="hidden">
+                <InputLabel for="reference" value="Criteria Reference" />
+                <select multiple="true" @change="onReferenceChange" id="reference" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                    <option value="">Choose reference</option>
+                </select>
+                <InputError class="mt-2" :message="form.errors.reference" />
+            </div>
         </template>
     </Form>
     <template v-for="vcassessment in vacancy.assessments">
@@ -265,7 +326,7 @@ onMounted(() => {
     <hr class="h-px my-3 bg-gray-200 border-0 dark:bg-gray-700">
     <div class="flex justify-end items-center space-x-4">
         <SecondaryButton @click="prevStep">Previous</SecondaryButton>
-        <PrimaryButton @click="submit">Save</PrimaryButton>
+        <PrimaryButton @click="publishVacancy">Publish</PrimaryButton>
     </div>
     <FlowbiteModal id="deleteCriteriaModal" title="Confirm delete" @close="closeDeleteModal">
         <Form @submitted="doDelete">

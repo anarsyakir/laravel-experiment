@@ -17,7 +17,7 @@ class AssessmentCriteriaResource extends JsonResource
     {
         return [
             'criteria' => new CriteriaResource($this->criteria),
-            'reference' => $this->when($this->reference, Json::decode($this->reference, true)),
+            'reference' => $this->when($this->reference, Json::decode($this->reference, true), $this->reference),
             'treshold' => $this->treshold,
             'weight' => $this->weight,
             'publish' => $this->publish,

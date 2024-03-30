@@ -28,11 +28,11 @@ class UpdateVacancyAssessmentRequest extends FormRequest
             'vacancy_id' => 'required',
             'assessment_id' => [
                 'required',
-                Rule::unique('vacancy_assessments')->ignore($this->id)->where(fn (Builder $query) => $query->where('vacancy_id', $this->vacancy_id))
+                Rule::unique('vacancy_assessments')->ignore($this->id)->where(fn (Builder $query) => $query->where('vacancy_id', $this->vacancy_id)->where('deleted_at', '=', null))
             ],
             'sequence' => 'required|numeric',
-            'treshold' => 'required|numeric',
-            'weight' => 'required|numeric',
+            'treshold' => 'required|numeric|min:0|max:100',
+            'weight' => 'required|numeric|min:0|max:100',
             'count_by_average' => 'boolean',
         ];
     }

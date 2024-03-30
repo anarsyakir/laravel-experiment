@@ -22,6 +22,7 @@ class VacancyAssessmentResource extends JsonResource
             'count_by_average' => $this->count_by_average,
             'assessment' => new AssessmentResource($this->assessment),
             'criterias' => AssessmentCriteriaResource::collection($this->criterias),
+            'criterias_weight' => $this->criterias->sum('weight'),
         ];
     }
 }

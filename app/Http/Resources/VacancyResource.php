@@ -27,7 +27,11 @@ class VacancyResource extends JsonResource
             'start_at' => $this->start_at,
             'end_at' => $this->end_at,
             'max_applicant' => $this->max_applicant,
-            'assessments' => new VacancyAssessmentCollection($this->assessments)
+            'assessments' => new VacancyAssessmentCollection($this->assessments),
+            'assessments_weight' => $this->assessments->sum('weight'),
+            'status' => $this->status_name,
+            'status_code' => $this->status,
+            'is_valid' => $this->isValid()
         ];
     }
 }

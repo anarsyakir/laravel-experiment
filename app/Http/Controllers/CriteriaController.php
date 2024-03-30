@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreCriteriaRequest;
 use App\Http\Requests\UpdateCriteriaRequest;
 use App\Models\Criteria;
+use Illuminate\Support\Str;
 
 class CriteriaController extends Controller
 {
@@ -62,5 +63,11 @@ class CriteriaController extends Controller
     public function destroy(Criteria $criteria)
     {
         //
+    }
+
+    public function reference(string $reference)
+    {
+        $reference = ('\\App\\Models\\' . Str::studly($reference))::all();
+        return response()->json($reference->pluck('name'));
     }
 }

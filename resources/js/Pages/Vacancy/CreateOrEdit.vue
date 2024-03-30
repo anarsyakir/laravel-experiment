@@ -104,6 +104,34 @@ watch(step, async (newStep, oldStep) => {
                         </div>
                     </li>
                 </ol>
+                <div v-if="vacancy && !vacancy.is_valid" class="flex p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+                    <svg class="flex-shrink-0 inline w-4 h-4 me-3 mt-[2px]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+                    </svg>
+                    <span class="sr-only">Error</span>
+                    <div>
+                        <span class="font-bold">Ensure that these requirements are met:</span>
+                        <ul class="mt-1.5 list-disc list-inside">
+                            <li v-if="vacancy && vacancy.assessments.length == 0">One vacancy must have minimum 1 assessment.</li>
+                            <li v-if="vacancy && vacancy.assessments_weight !== 100">Total weight of assessments must be 100.</li>
+                            <template v-for="crit in vacancy.assessments">
+                                <li v-if="crit.criterias.length == 0">Assessment "{{ crit.assessment.name }}" must have minimum 1 criteria</li>
+                                <li v-if="crit.criterias_weight !== 100">Total criteria weight of assessments "{{ crit.assessment.name }}" must be 100.</li>
+                            </template>
+                            <li><b>If one of the requirement does not meet, vacancy will not published.</b></li>
+                        </ul>
+                    </div>
+                </div>
+                <div v-if="vacancy && vacancy.is_valid && vacancy.status_code !== 1" class="flex p-4 mb-4 text-sm text-yellow-800 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-yellow-400" role="alert">
+                    <svg class="flex-shrink-0 inline w-4 h-4 me-3 mt-[2px]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+                    </svg>
+                    <span class="sr-only">Warning</span>
+                    <div>
+                        <span class="font-bold">Vacancy is valid but not published</span>
+                    </div>
+                </div>
+
                 <div v-if="step == 1" class="mx-auto">
                     <FormVacancy :companies="companies" :positions="positions" :vacancy="vacancy" @alertSuccess="alertSuccess" @nextStep="nextStep"/>
                 </div>

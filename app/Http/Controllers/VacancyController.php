@@ -15,6 +15,7 @@ use App\Models\Company;
 use App\Models\Criteria;
 use App\Models\Position;
 use App\Models\Vacancy;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class VacancyController extends Controller
@@ -25,12 +26,13 @@ class VacancyController extends Controller
     public function index()
     {
         return Inertia::render('Vacancy/List', [
-            'vacancies' => new VacancyCollection(Vacancy::paginate(5))
+            'vacancies' => new VacancyCollection(Vacancy::where('status', 1)->paginate(5))
         ]);
     }
 
     public function admin()
     {
+        error_log('ana');
         return Inertia::render('Vacancy/Admin', [
             'vacancies' => new VacancyCollection(Vacancy::paginate(5))
         ]);
@@ -85,7 +87,26 @@ class VacancyController extends Controller
      */
     public function update(UpdateVacancyRequest $request, Vacancy $vacancy)
     {
-        $vacancy->update($request->validated());
+
+        $data = $request->validated();
+        
+        if(! $vacancy->isValid()){
+            $data['status'] = 0;
+        }
+
+        $vacancy->update($data);
+
+        return to_route('vacancies.edit', ['vacancy' => $vacancy]);
+    }
+
+    public function publish(Request $request, Vacancy $vacancy)
+    {
+
+        if($vacancy->isValid()){
+            $data['status'] = 1;
+        }
+
+        $vacancy->update($data);
 
         return to_route('vacancies.edit', ['vacancy' => $vacancy]);
     }

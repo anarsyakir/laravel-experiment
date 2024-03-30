@@ -202,7 +202,7 @@ onMounted(() => {
                     placeholder="Weight"
                     autofocus
                 />
-                <InputError class="mt-2" :message="form.errors.treshold" />
+                <InputError class="mt-2" :message="form.errors.weight" />
             </div>
             <div>
                 <InputLabel for="count_by_average" value="Count by average?" />

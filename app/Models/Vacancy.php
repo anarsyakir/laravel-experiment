@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Events\VacancyDeleted;
 use App\Http\Resources\AssessmentCriteriaResource;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -25,12 +26,17 @@ class Vacancy extends Model
         'max_applicant',
         'start_at',
         'end_at',
+        'status',
     ];
 
     protected $hidden = [
         'created_at',
         'deleted_at',
         'updated_at',
+    ];
+
+    protected $dispatchesEvents = [
+        'deleted' => VacancyDeleted::class,
     ];
 
     public function company(): BelongsTo
@@ -78,5 +84,69 @@ class Vacancy extends Model
         return Attribute::make(
             get: fn (string $value) => Carbon::parse($value)->tz(config('app.timezone'))->format('Y-m-d H:i:s'),
         );
+    }
+
+    public function isAssessmentExist(): bool
+    {
+        return $this->assessments->count() > 0;
+    }
+
+    public function isAssessmentCriteriaExist(): bool
+    {
+        $complete = true;
+
+        foreach($this->assessments as $assessment){
+            if($assessment->criterias->count() == 0){
+                $complete = false;
+            }
+        }
+        return $complete;
+    }
+
+    public function statusName(): Attribute
+    {
+        return Attribute::make(
+            get: function() {
+                if($this->status == 1){
+                    return 'Published';
+                }
+
+                if($this->status == 2){
+                    return 'Deleted';
+                }
+
+                if(! $this->isAssessmentExist()){
+                    return 'Assessment incomplete';
+                }
+
+                if(! $this->isAssessmentCriteriaExist()){
+                    return 'Criteria incomplete';
+                }
+
+                return 'Draft';
+            }
+        );
+    }
+
+    public function isAssessmentWeightValid()
+    {
+        return $this->assessments->sum('weight') === 100;
+    }
+
+    public function isAssessmentCriteriaWeightValid()
+    {
+        $valid = true;
+        foreach($this->assessments as $item){
+            if($item->criterias->sum('weight') !== 100){
+                $valid = false;
+            }
+        }
+
+        return $valid;
+    }
+
+    public function isValid(): bool
+    {
+        return $this->isAssessmentExist() && $this->isAssessmentCriteriaExist() && $this->isAssessmentWeightValid() && $this->isAssessmentCriteriaWeightValid();
     }
 }

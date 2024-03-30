@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ApplicantController;
 use App\Http\Controllers\AssessmentCriteriaController;
+use App\Http\Controllers\CriteriaController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReportingController;
 use App\Http\Controllers\UserController;
@@ -53,4 +54,6 @@ Route::middleware([
     Route::get('/reporting', [ReportingController::class, 'index'])->name('report.index');
     Route::put('/assessment-criteria/{assessment_criteria}', [AssessmentCriteriaController::class, 'update'])->name('assessment-criteria.update');
     Route::delete('/assessment-criteria/{assessment_criteria}', [AssessmentCriteriaController::class, 'destroy'])->name('assessment-criteria.destroy');
+    Route::put('/vacancies/publish/{vacancy}', [VacancyController::class, 'publish'])->name('vacancies.publish');
+    Route::post('/get-reference/{name}', [CriteriaController::class, 'reference'])->name('reference');
 });

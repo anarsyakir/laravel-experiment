@@ -29,6 +29,7 @@ class UpdateVacancyRequest extends FormRequest
             'max_applicant' => 'required',
             'start_at' => 'date_format:Y-m-d',
             'end_at' => 'date_format:Y-m-d',
+            'status' => 'boolean',
         ];
     }
 }
