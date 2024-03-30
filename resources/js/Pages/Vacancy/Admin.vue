@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from 'vue';
+import { Modal } from 'flowbite';
 import { useForm, router } from '@inertiajs/vue3'
 import PrimaryButton from '@/Components/Flowbite/Button/Primary.vue';
 import FlowbiteLayout from '@/Layouts/FlowbiteLayout.vue';
@@ -38,25 +39,9 @@ const buttons = ref([
 ]);
 
 const title = ref('Create vacancy');
-const formDelete = useForm({
-    id: ''
-});
 
 const onAdd = () => {
     router.get(route('vacancies.create'));
-}
-
-const openDeleteModal = () => {
-    const targetEl = document.getElementById('deleteUserModal');
-    const modal = new Modal(targetEl, {closable: false});
-    modal.show();
-}
-
-const closeDeleteModal = () => {
-    const targetEl = document.getElementById('deleteUserModal');
-    const modal = new Modal(targetEl, {closable: false});
-    modal.hide();
-    formDelete.reset();
 }
 
 const onEdit = (data) => {
@@ -67,15 +52,33 @@ const onPreview = (data) => {
     router.get(route('applicant.admin', { vacancy : data.id}));
 }
 
+const formDelete = useForm({
+    id: ''
+});
+
+
 const onDelete = (data) => {
     formDelete.id = '' + data.id;
     openDeleteModal();
 }
 
 const doDelete = () => {
-    formDelete.delete(route('users.destroy', {user: formDelete.id}), {
+    formDelete.delete(route('vacancies.destroy', {vacancy: formDelete.id}), {
         onSuccess: () => closeDeleteModal(),
     });
+}
+
+const openDeleteModal = () => {
+    const targetEl = document.getElementById('deleteVacancyModal');
+    const modal = new Modal(targetEl, {closable: false});
+    modal.show();
+}
+
+const closeDeleteModal = () => {
+    const targetEl = document.getElementById('deleteVacancyModal');
+    const modal = new Modal(targetEl, {closable: false});
+    modal.hide();
+    formDelete.reset();
 }
 
 </script>
@@ -98,7 +101,7 @@ const doDelete = () => {
         </div>
     </FlowbiteLayout>
 
-    <FlowbiteModal id="deleteUserModal" title="Confirm delete" @close="closeDeleteModal">
+    <FlowbiteModal id="deleteVacancyModal" title="Confirm delete" @close="closeDeleteModal">
         <Form @submitted="doDelete">
             <template #form>
                 <TextInput
@@ -106,7 +109,7 @@ const doDelete = () => {
                     v-model="formDelete.id"
                     type="hidden"
                 />
-                <p class="mb-4 text-gray-500 dark:text-gray-300">Are you sure you want to delete this user?</p>
+                <p class="mb-4 text-gray-500 dark:text-gray-300">Are you sure you want to delete this vacancy?</p>
             </template>
             <template #actions>
                 <div class="flex justify-end items-center space-x-4">

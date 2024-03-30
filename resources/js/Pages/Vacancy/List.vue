@@ -32,7 +32,7 @@ const breadcrumb = [
                     </div>
                     <div v-for="criteria in vacancy.publishedCriteria" class="grid grid-cols-6 gap-4 pb-1">
                         <dt class="text-sm font-semibold">{{ criteria.criteria.name }}</dt>
-                        <dd class="mb-1 text-gray-500 md:text-sm dark:text-gray-400 col-span-5">{{ criteria.reference ? criteria.reference.join('/') : crieria.treshold }}</dd>
+                        <dd class="mb-1 text-gray-500 md:text-sm dark:text-gray-400 col-span-5">{{ criteria.reference ? criteria.reference.join('/') : criteria.treshold }}</dd>
                     </div>
                 </dl>
             </template>

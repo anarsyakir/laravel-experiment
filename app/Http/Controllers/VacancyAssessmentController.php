@@ -69,6 +69,8 @@ class VacancyAssessmentController extends Controller
      */
     public function destroy(VacancyAssessment $vacancyAssessment)
     {
-        //
+        $vacancy = Vacancy::find($vacancyAssessment->vacancy_id);
+        $vacancyAssessment->delete();
+        return to_route('vacancies.edit', ['vacancy' => $vacancy]);
     }
 }

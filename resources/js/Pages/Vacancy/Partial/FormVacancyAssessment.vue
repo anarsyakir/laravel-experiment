@@ -1,6 +1,6 @@
 <script setup>
 import { onMounted, ref } from 'vue';
-import { initFlowbite } from 'flowbite';
+import { initFlowbite, initDropdowns } from 'flowbite';
 import { useForm } from '@inertiajs/vue3';
 import Form from '@/Components/Flowbite/Form.vue';
 import TextInput from '@/Components/Flowbite/Form/TextInput.vue';
@@ -11,6 +11,7 @@ import PrimaryButton from '@/Components/Flowbite/Button/Primary.vue';
 import SecondaryButton from '@/Components/Flowbite/Button/Secondary.vue';
 import Table from '@/Components/Flowbite/Table.vue';
 import Checkbox from '@/Components/Flowbite/Form/Checkbox.vue';
+import FlowbiteModal from '@/Components/Flowbite/Modal.vue';
 
 const props = defineProps({
     vacancy: Object,
@@ -56,6 +57,7 @@ const onSuccess = () => {
     emit('alertSuccess');
     form.reset();
     resetSelectNCheckbox();
+    initDropdowns();
 }
 
 const prevStep = () => {
@@ -83,7 +85,11 @@ const actions = ref([
 const resetSelectNCheckbox = () => {
     const children = document.getElementById('assessment').children;
     for (var i = 0; i < children.length; i++) {
-        children[i].removeAttribute('selected');
+        if(children[i].value == '') {
+            children[i].setAttribute('selected', true);
+        } else {
+            children[i].removeAttribute('selected');
+        }
     }
     const checkbox = document.getElementById('count_by_average');
     checkbox.checked = false;
@@ -108,6 +114,34 @@ const onEdit = (data) => {
     checkbox.checked = data.count_by_average == 1 ? true : false;
 }
 
+const formDelete = useForm({
+    id: ''
+});
+
+const onDelete = (data) => {
+    formDelete.id = '' + data.id;
+    openDeleteModal();
+}
+
+const doDelete = () => {
+    formDelete.delete(route('vacancy-assessment.destroy', {vacancy_assessment: formDelete.id}), {
+        onSuccess: () => closeDeleteModal(),
+    });
+}
+
+const openDeleteModal = () => {
+    const targetEl = document.getElementById('deleteVassessmentModal');
+    const modal = new Modal(targetEl, {closable: false});
+    modal.show();
+}
+
+const closeDeleteModal = () => {
+    const targetEl = document.getElementById('deleteVassessmentModal');
+    const modal = new Modal(targetEl, {closable: false});
+    modal.hide();
+    formDelete.reset();
+}
+
 onMounted(() => {
     initFlowbite();
 });
@@ -130,7 +164,7 @@ onMounted(() => {
                     id="assessment"
                     v-model="form.assessment_id"
                 >
-                    <option>Choose assessment to add</option>
+                    <option value="">Choose assessment to add</option>
                     <template v-for="assessment in assessments">
                         <option :value="assessment.id">{{ assessment.name }}</option>
                     </template>
@@ -192,11 +226,29 @@ onMounted(() => {
         </template>
     </Form>
     <Table :rows="vacancy.assessments" :columns="columns" :actions="actions"
-    @onEdit="onEdit"
+    @onEdit="onEdit" @onDelete="onDelete"
     />
     <hr class="h-px my-3 bg-gray-200 border-0 dark:bg-gray-700">
     <div class="flex justify-end items-center space-x-4">
         <SecondaryButton @click="prevStep">Previous</SecondaryButton>
         <PrimaryButton @click="nextStep">Next</PrimaryButton>
     </div>
+    <FlowbiteModal id="deleteVassessmentModal" title="Confirm delete" @close="closeDeleteModal">
+        <Form @submitted="doDelete">
+            <template #form>
+                <TextInput
+                    id="deletedId"
+                    v-model="formDelete.id"
+                    type="hidden"
+                />
+                <p class="mb-4 text-gray-500 dark:text-gray-300">Are you sure you want to delete this assessment?</p>
+            </template>
+            <template #actions>
+                <div class="flex justify-end items-center space-x-4">
+                    <SecondaryButton type="button" @click="closeDeleteModal">Cancel</SecondaryButton>
+                    <PrimaryButton :class="{ 'opacity-25': formDelete.processing }" :disabled="formDelete.processing">Yes</PrimaryButton>
+                </div>
+            </template>
+        </Form>
+    </FlowbiteModal>
 </template>

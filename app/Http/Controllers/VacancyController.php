@@ -95,6 +95,7 @@ class VacancyController extends Controller
      */
     public function destroy(Vacancy $vacancy)
     {
-        //
+        $vacancy->delete();
+        return to_route('vacancy.admin');
     }
 }

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreAssessmentCriteriaRequest;
 use App\Http\Requests\UpdateAssessmentCriteriaRequest;
 use App\Models\AssessmentCriteria;
+use App\Models\Vacancy;
+use App\Models\VacancyAssessment;
 
 class AssessmentCriteriaController extends Controller
 {
@@ -29,7 +31,13 @@ class AssessmentCriteriaController extends Controller
      */
     public function store(StoreAssessmentCriteriaRequest $request)
     {
-        //
+        $assessmentCriteria = AssessmentCriteria::create($request->validated());
+
+        $vacancyAssessment = VacancyAssessment::find($assessmentCriteria->vacancy_assessment_id);
+
+        $vacancy = Vacancy::find($vacancyAssessment->vacancy_id);
+
+        return to_route('vacancies.edit', ['vacancy' => $vacancy]);
     }
 
     /**
@@ -53,7 +61,11 @@ class AssessmentCriteriaController extends Controller
      */
     public function update(UpdateAssessmentCriteriaRequest $request, AssessmentCriteria $assessmentCriteria)
     {
-        //
+        $assessmentCriteria->update($request->validated());
+        $vacancyAssessment = VacancyAssessment::find($assessmentCriteria->vacancy_assessment_id);
+        $vacancy = Vacancy::find($vacancyAssessment->vacancy_id);
+
+        return to_route('vacancies.edit', ['vacancy' => $vacancy]);
     }
 
     /**
@@ -61,6 +73,10 @@ class AssessmentCriteriaController extends Controller
      */
     public function destroy(AssessmentCriteria $assessmentCriteria)
     {
-        //
+        $vacancyAssessment = VacancyAssessment::find($assessmentCriteria->vacancy_assessment_id);
+        $vacancy = Vacancy::find($vacancyAssessment->vacancy_id);
+        $assessmentCriteria->delete();
+
+        return to_route('vacancies.edit', ['vacancy' => $vacancy]);
     }
 }

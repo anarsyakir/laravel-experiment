@@ -19,6 +19,10 @@ class AssessmentCriteriaResource extends JsonResource
             'criteria' => new CriteriaResource($this->criteria),
             'reference' => $this->when($this->reference, Json::decode($this->reference, true)),
             'treshold' => $this->treshold,
+            'weight' => $this->weight,
+            'publish' => $this->publish,
+            'id' => $this->id,
+            'vacancy_assessment_id' => $this->vacancy_assessment_id,
         ];
     }
 }

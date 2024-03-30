@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Database\Query\Builder;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreAssessmentCriteriaRequest extends FormRequest
 {
@@ -11,7 +13,7 @@ class StoreAssessmentCriteriaRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +24,14 @@ class StoreAssessmentCriteriaRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'vacancy_assessment_id' => 'required',
+            'criteria_id' => [
+                'required',
+                Rule::unique('assessment_criterias')->ignore($this->id)->where(fn (Builder $query) => $query->where('vacancy_assessment_id', $this->vacancy_assessment_id))
+            ],
+            'treshold' => 'required|numeric',
+            'weight' => 'required|numeric',
+            'publish' => 'boolean',
         ];
     }
 }

@@ -44,11 +44,13 @@ Route::middleware([
     Route::resource('users', UserController::class)->except(['edit', 'create', 'show']);
     Route::resource('vacancies', VacancyController::class);
     Route::resource('applicants', ApplicantController::class)->except(['edit', 'create']);
-    Route::resource('vacancy-assessment', VacancyAssessmentController::class)->only(['store', 'update']);
-    Route::resource('assessment-criteria', AssessmentCriteriaController::class)->only(['store', 'update']);
+    Route::resource('vacancy-assessment', VacancyAssessmentController::class)->only(['store', 'update', 'destroy']);
+    Route::resource('assessment-criteria', AssessmentCriteriaController::class)->only(['store']);
     Route::get('/profile/{user?}', [ProfileController::class, 'index'])->name('profile.user');
     Route::get('/vacancy/admin', [VacancyController::class, 'admin'])->name('vacancy.admin');
     Route::get('/applicant/admin/{vacancy}', [ApplicantController::class, 'admin'])->name('applicant.admin');
     Route::get('/applicant/show/{applicant}', [ApplicantController::class, 'showAdmin'])->name('applicant.show.admin');
     Route::get('/reporting', [ReportingController::class, 'index'])->name('report.index');
+    Route::put('/assessment-criteria/{assessment_criteria}', [AssessmentCriteriaController::class, 'update'])->name('assessment-criteria.update');
+    Route::delete('/assessment-criteria/{assessment_criteria}', [AssessmentCriteriaController::class, 'destroy'])->name('assessment-criteria.destroy');
 });

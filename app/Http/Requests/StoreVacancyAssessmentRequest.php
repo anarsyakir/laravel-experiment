@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Database\Query\Builder;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreVacancyAssessmentRequest extends FormRequest
 {
@@ -23,7 +25,10 @@ class StoreVacancyAssessmentRequest extends FormRequest
     {
         return [
             'vacancy_id' => 'required',
-            'assessment_id' => 'required',
+            'assessment_id' => [
+                'required',
+                Rule::unique('vacancy_assessments')->ignore($this->id)->where(fn (Builder $query) => $query->where('vacancy_id', $this->vacancy_id))
+            ],
             'sequence' => 'required|numeric',
             'treshold' => 'required|numeric',
             'weight' => 'required|numeric',

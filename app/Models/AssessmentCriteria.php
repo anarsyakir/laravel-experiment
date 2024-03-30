@@ -15,8 +15,8 @@ class AssessmentCriteria extends Model
     use HasUuids;
 
     protected $fillable = [
-        'vacancy_id',
-        'assessment_id',
+        'id',
+        'vacancy_assessment_id',
         'criteria_id',
         'treshold',
         'weight',
