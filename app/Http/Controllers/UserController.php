@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\UpdateProfileRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\UserCollection;
 use App\Models\User;
@@ -55,6 +56,30 @@ class UserController extends Controller
         $user->update($data);
 
         return to_route('users.index');
+    }
+
+    public function updateProfile(UpdateProfileRequest $request)
+    {
+        $user = $request->user();
+        
+        $data = [
+            'name' => $request->name,
+            'email' => $request->email
+        ];
+
+        if(!empty($request->password)) {
+            $data['password'] = Hash::make($request->password);
+        }
+
+        $user->update($data);
+
+        $input = $request->all();
+
+        if (isset($input['photo'])) {
+            $user->updateProfilePhoto($input['photo']);
+        }
+
+        return to_route('profile.user');
     }
 
     /**

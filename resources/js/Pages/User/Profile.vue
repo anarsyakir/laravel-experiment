@@ -9,25 +9,12 @@ import InputLabel from '@/Components/Flowbite/Form/InputLabel.vue';
 import PrimaryButton from '@/Components/Flowbite/Button/Primary.vue';
 import SecondaryButton from '@/Components/Flowbite/Button/Secondary.vue';
 import InputError from '@/Components/InputError.vue';
-
-const props = defineProps({
-    user: Object
-});
+import UpdateUser from './Partials/UpdateUser.vue';
 
 const breadcrumb = [
     {name: "Home", href:route('dashboard')},
-    {name: "Manage Users", href:null},
+    {name: "Profile", href:null},
 ];
-
-const form = useForm({
-    id: '',
-    name: props.user.name,
-    email: props.user.email,
-    password: '',
-    new_password: '',
-    password_confirmation: '',
-    terms: true,
-});
 
 const formPersonal = useForm({
     user_id: '',
@@ -68,101 +55,7 @@ const formExperience = useForm({
     <FlowbiteLayout title="Manage User" :breadcrumb="breadcrumb">
         <div class="grid grid-cols-12 gap-4">
             <div class="col-span-3">
-                <div class="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-                    <div class="flex justify-end px-4 pt-3">
-                        <button id="dropdownButton" data-dropdown-toggle="dropdown" class="inline-block text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-1.5" type="button">
-                            <span class="sr-only">Open dropdown</span>
-                            <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 3">
-                                <path d="M2 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm6.041 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM14 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z"/>
-                            </svg>
-                        </button>
-                        <!-- Dropdown menu -->
-                        <div id="dropdown" class="z-10 hidden text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
-                            <ul class="py-2" aria-labelledby="dropdownButton">
-                            <li>
-                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Update profile</a>
-                            </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="flex flex-col items-center pb-3">
-                        <img class="w-24 h-24 mb-3 rounded-full shadow-lg" :src="user.profile_photo_url" alt="Bonnie image"/>
-                        <div class="flex mt-4 md:mt-6">
-                            <a href="#" class="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Select new photo</a>
-                        </div>
-                    </div>
-                    <div class="items-center p-3">
-                        <Form col="">
-                            <template #form>
-                                <TextInput
-                                    id="id"
-                                    v-model="form.id"
-                                    type="hidden"
-                                />
-                                <div>
-                                    <InputLabel for="name" value="Name" />
-                                    <TextInput
-                                        id="name"
-                                        v-model="form.name"
-                                        type="text"
-                                        placeholder="User name"
-                                        autofocus
-                                    />
-                                    <InputError class="mt-2" :message="form.errors.name" />
-                                </div>
-                                <div>
-                                    <InputLabel for="email" value="Email" />
-                                    <TextInput
-                                        id="email"
-                                        v-model="form.email"
-                                        type="email"
-                                        placeholder="User email"
-                                        autofocus
-                                    />
-                                    <InputError class="mt-2" :message="form.errors.email" />
-                                </div>
-                                <div>
-                                    <InputLabel for="password" value="Current Password" />
-                                    <TextInput
-                                        id="password"
-                                        v-model="form.password"
-                                        type="password"
-                                        placeholder="Left blank if unchanged"
-                                        autofocus
-                                    />
-                                    <InputError class="mt-2" :message="form.errors.password" />
-                                </div>
-                                <div>
-                                    <InputLabel for="password" value="New Password" />
-                                    <TextInput
-                                        id="new_password"
-                                        v-model="form.new_password"
-                                        type="password"
-                                        placeholder="Left blank if unchanged"
-                                        autofocus
-                                    />
-                                    <InputError class="mt-2" :message="form.errors.new_password" />
-                                </div>
-                                <div>
-                                    <InputLabel for="password_confirmation" value="Confirm password" />
-                                    <TextInput
-                                        id="password_confirmation"
-                                        v-model="form.password_confirmation"
-                                        type="password"
-                                        placeholder="Left blank if unchanged"
-                                        autofocus
-                                    />
-                                    <InputError class="mt-2" :message="form.errors.password_confirmation" />
-                                </div>
-                            </template>
-                            <template #actions>
-                                <div class="flex justify-end items-center space-x-4">
-                                    <PrimaryButton :class="{ 'opacity-25': form.processing }" :disabled="form.processing">Save</PrimaryButton>
-                                </div>
-                            </template>
-                        </Form>
-                    </div>
-                </div>
+                <UpdateUser :user="$page.props.auth.user"/>
             </div>
             <div class="col-span-9">
                 <div class="w-full bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
@@ -303,114 +196,10 @@ const formExperience = useForm({
                             </Form>
                         </div>
                         <div class="hidden p-4 bg-white rounded-lg dark:bg-gray-800" id="major" role="tabpanel" aria-labelledby="major-tab">
-                            <Form>
-                                <template #form>
-                                    <div>
-                                        <InputLabel for="name" value="Name" />
-                                        <TextInput
-                                            id="name"
-                                            v-model="form.name"
-                                            type="text"
-                                            placeholder="User name"
-                                            autofocus
-                                        />
-                                        <InputError class="mt-2" :message="form.errors.name" />
-                                    </div>
-                                    <div>
-                                        <InputLabel for="email" value="Email" />
-                                        <TextInput
-                                            id="email"
-                                            v-model="form.email"
-                                            type="email"
-                                            placeholder="User email"
-                                            autofocus
-                                        />
-                                        <InputError class="mt-2" :message="form.errors.email" />
-                                    </div>
-                                    <div>
-                                        <InputLabel for="password" value="Password" />
-                                        <TextInput
-                                            id="password"
-                                            v-model="form.password"
-                                            type="password"
-                                            placeholder="User password"
-                                            autofocus
-                                        />
-                                        <InputError class="mt-2" :message="form.errors.password" />
-                                    </div>
-                                    <div>
-                                        <InputLabel for="password_confirmation" value="Confirm password" />
-                                        <TextInput
-                                            id="password_confirmation"
-                                            v-model="form.password_confirmation"
-                                            type="password"
-                                            placeholder="Confirm password"
-                                            autofocus
-                                        />
-                                        <InputError class="mt-2" :message="form.errors.password_confirmation" />
-                                    </div>
-                                </template>
-                                <template #actions>
-                                    <div class="flex justify-end items-center space-x-4">
-                                        <PrimaryButton :class="{ 'opacity-25': form.processing }" :disabled="form.processing">Save</PrimaryButton>
-                                    </div>
-                                </template>
-                            </Form>
+                            
                         </div>
                         <div class="hidden p-4 bg-white rounded-lg dark:bg-gray-800" id="experience" role="tabpanel" aria-labelledby="experience-tab">
-                            <Form>
-                                <template #form>
-                                    <div>
-                                        <InputLabel for="name" value="Name" />
-                                        <TextInput
-                                            id="name"
-                                            v-model="form.name"
-                                            type="text"
-                                            placeholder="User name"
-                                            autofocus
-                                        />
-                                        <InputError class="mt-2" :message="form.errors.name" />
-                                    </div>
-                                    <div>
-                                        <InputLabel for="email" value="Email" />
-                                        <TextInput
-                                            id="email"
-                                            v-model="form.email"
-                                            type="email"
-                                            placeholder="User email"
-                                            autofocus
-                                        />
-                                        <InputError class="mt-2" :message="form.errors.email" />
-                                    </div>
-                                    <div>
-                                        <InputLabel for="password" value="Password" />
-                                        <TextInput
-                                            id="password"
-                                            v-model="form.password"
-                                            type="password"
-                                            placeholder="User password"
-                                            autofocus
-                                        />
-                                        <InputError class="mt-2" :message="form.errors.password" />
-                                    </div>
-                                    <div>
-                                        <InputLabel for="password_confirmation" value="Confirm password" />
-                                        <TextInput
-                                            id="password_confirmation"
-                                            v-model="form.password_confirmation"
-                                            type="password"
-                                            placeholder="Confirm password"
-                                            autofocus
-                                        />
-                                        <InputError class="mt-2" :message="form.errors.password_confirmation" />
-                                    </div>
-                                </template>
-                                <template #actions>
-                                    <div class="flex justify-end items-center space-x-4">
-                                        <PrimaryButton :class="{ 'opacity-25': form.processing }" :disabled="form.processing">Save</PrimaryButton>
-                                    </div>
-                                </template>
-                            </Form>
+                            
                         </div>
                     </div>
                 </div>

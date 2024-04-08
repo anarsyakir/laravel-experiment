@@ -10,12 +10,6 @@ class ProfileController extends Controller
 {
     public function index(Request $request, User $user)
     {
-        if(!$user->id){
-            $user = $request->user();
-        }
-
-        return Inertia::render('User/Profile', [
-            'user' => $user
-        ]);
+        return Inertia::render('User/Profile');
     }
 }

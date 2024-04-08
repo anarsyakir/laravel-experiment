@@ -48,6 +48,7 @@ Route::middleware([
     Route::resource('vacancy-assessment', VacancyAssessmentController::class)->only(['store', 'update', 'destroy']);
     Route::resource('assessment-criteria', AssessmentCriteriaController::class)->only(['store']);
     Route::get('/profile/{user?}', [ProfileController::class, 'index'])->name('profile.user');
+    Route::put('/profile/update', [UserController::class, 'updateProfile'])->name('profile.update');
     Route::get('/vacancy/admin', [VacancyController::class, 'admin'])->name('vacancy.admin');
     Route::get('/applicant/admin/{vacancy}', [ApplicantController::class, 'admin'])->name('applicant.admin');
     Route::get('/applicant/show/{applicant}', [ApplicantController::class, 'showAdmin'])->name('applicant.show.admin');
