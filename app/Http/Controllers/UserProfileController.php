@@ -29,7 +29,16 @@ class UserProfileController extends Controller
      */
     public function store(StoreUserProfileRequest $request)
     {
-        //
+
+        $data = $request->validated();
+        $data['user_id'] = $request->user()->id;
+
+        UserProfile::updateOrCreate(
+            ['user_id' => $request->user()->id],
+            $data
+        );
+
+        return to_route('profile.user');
     }
 
     /**

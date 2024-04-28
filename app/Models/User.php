@@ -7,6 +7,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
@@ -71,5 +73,25 @@ class User extends Authenticatable
         return Attribute::make(
             get: fn (string $value) => Carbon::parse($value)->tz(config('app.timezone'))->format('Y-m-d H:i:s'),
         );
+    }
+
+    public function profile(): HasOne
+    {
+        return $this->hasOne(UserProfile::class);
+    }
+
+    public function address(): HasOne
+    {
+        return $this->hasOne(UserAddress::class);
+    }
+
+    public function educations(): HasMany
+    {
+        return $this->hasMany(UserEducation::class);
+    }
+
+    public function experiences(): HasMany
+    {
+        return $this->hasMany(UserExperience::class);
     }
 }

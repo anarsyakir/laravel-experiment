@@ -11,7 +11,7 @@ class StoreUserEducationRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,11 @@ class StoreUserEducationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'education_id' => 'required',
+            'major_id' => 'required',
+            'school' => 'required',
+            'gpa' => 'required|numeric|max:4|min:0',
+            'year' => 'required|digits:4|integer|min:1900|max:'.(date('Y')+1),
         ];
     }
 }

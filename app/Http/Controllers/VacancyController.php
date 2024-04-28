@@ -32,7 +32,6 @@ class VacancyController extends Controller
 
     public function admin()
     {
-        error_log('ana');
         return Inertia::render('Vacancy/Admin', [
             'vacancies' => new VacancyCollection(Vacancy::paginate(5))
         ]);

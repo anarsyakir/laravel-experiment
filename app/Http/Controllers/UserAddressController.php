@@ -29,7 +29,15 @@ class UserAddressController extends Controller
      */
     public function store(StoreUserAddressRequest $request)
     {
-        //
+        $data = $request->validated();
+        $data['user_id'] = $request->user()->id;
+
+        UserAddress::updateOrCreate(
+            ['user_id' => $request->user()->id],
+            $data
+        );
+
+        return to_route('profile.user');
     }
 
     /**

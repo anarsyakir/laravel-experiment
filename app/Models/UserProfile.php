@@ -14,6 +14,7 @@ class UserProfile extends Model
     use HasUuids;
 
     protected $fillable = [
+        'user_id',
         'phone_number',
         'birth_date',
         'birth_place',

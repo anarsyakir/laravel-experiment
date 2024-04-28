@@ -11,7 +11,7 @@ class StoreUserProfileRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,9 @@ class StoreUserProfileRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'birth_date' => 'date_format:Y-m-d',
+            'birth_place' => 'string|nullable',
+            'phone_number' => 'numeric|nullable'
         ];
     }
 }

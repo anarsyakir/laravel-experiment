@@ -29,7 +29,12 @@ class UserEducationController extends Controller
      */
     public function store(StoreUserEducationRequest $request)
     {
-        //
+        $data = $request->validated();
+        $data['user_id'] = $request->user()->id;
+
+        UserEducation::create($data);
+
+        return to_route('profile.user');
     }
 
     /**
@@ -53,7 +58,9 @@ class UserEducationController extends Controller
      */
     public function update(UpdateUserEducationRequest $request, UserEducation $userEducation)
     {
-        //
+        $userEducation->update($request->validated());
+
+        return to_route('profile.user');
     }
 
     /**
@@ -61,6 +68,8 @@ class UserEducationController extends Controller
      */
     public function destroy(UserEducation $userEducation)
     {
-        //
+        $userEducation->delete();
+        
+        return to_route('profile.user');
     }
 }
