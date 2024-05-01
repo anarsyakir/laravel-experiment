@@ -29,7 +29,12 @@ class UserExperienceController extends Controller
      */
     public function store(StoreUserExperienceRequest $request)
     {
-        //
+        $data = $request->validated();
+        $data['user_id'] = $request->user()->id;
+
+        UserExperience::create($data);
+
+        return to_route('profile.user');
     }
 
     /**
@@ -53,7 +58,9 @@ class UserExperienceController extends Controller
      */
     public function update(UpdateUserExperienceRequest $request, UserExperience $userExperience)
     {
-        //
+        $userExperience->update($request->validated());
+
+        return to_route('profile.user');
     }
 
     /**
@@ -61,6 +68,8 @@ class UserExperienceController extends Controller
      */
     public function destroy(UserExperience $userExperience)
     {
-        //
+        $userExperience->delete();
+        
+        return to_route('profile.user');
     }
 }

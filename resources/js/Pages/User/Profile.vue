@@ -5,6 +5,7 @@ import UpdateUser from './Partials/UpdateUser.vue';
 import PersonalInformation from './Partials/PersonalInformation.vue';
 import Address from './Partials/Address.vue';
 import Education from './Partials/Education.vue';
+import Experience from './Partials/Experience.vue';
 
 const props = defineProps({
     profile: Object,
@@ -13,29 +14,13 @@ const props = defineProps({
     userExperiences: Object,
     educations: Object,
     majors: Object,
+    positions: Object,
 });
 
 const breadcrumb = [
     {name: "Home", href:route('dashboard')},
     {name: "Profile", href:null},
 ];
-
-const formEducation = useForm({
-    user_id: '',
-    institute: '',
-    major: '',
-    year: '',
-    location: '',
-    gpa: ''
-});
-
-const formExperience = useForm({
-    user_id: '',
-    company: '',
-    position: '',
-    period: '',
-    location: ''
-});
 
 </script>
 
@@ -81,7 +66,7 @@ const formExperience = useForm({
                             <Education :user-educations="userEducations" :educations="educations" :majors="majors"/>
                         </div>
                         <div class="hidden p-4 bg-white rounded-lg dark:bg-gray-800" id="experience" role="tabpanel" aria-labelledby="experience-tab">
-                            
+                            <Experience :user-experiences="userExperiences" :positions="positions"/>
                         </div>
                     </div>
                 </div>

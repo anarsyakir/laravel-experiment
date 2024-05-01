@@ -4,11 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\EducationResource;
 use App\Http\Resources\MajorResource;
+use App\Http\Resources\PositionResource;
 use App\Http\Resources\UserEducationCollection;
+use App\Http\Resources\UserExperienceCollection;
 use App\Models\Education;
 use App\Models\Major;
+use App\Models\Position;
 use App\Models\User;
 use App\Models\UserEducation;
+use App\Models\UserExperience;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -47,9 +51,10 @@ class ProfileController extends Controller
             'profile' => $dataProfile,
             'address' => $dataAddress,
             'userEducations' => new UserEducationCollection(UserEducation::where('user_id', $request->user()->id)->paginate(5)),
-            'userExperiences' => $experiences,
+            'userExperiences' => new UserExperienceCollection(UserExperience::where('user_id', $request->user()->id)->paginate(5)),
             'educations' => EducationResource::collection(Education::all()),
-            'majors' => MajorResource::collection(Major::all())
+            'majors' => MajorResource::collection(Major::all()),
+            'positions' => PositionResource::collection(Position::all())
         ]);
     }
 }

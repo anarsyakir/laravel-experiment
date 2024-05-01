@@ -11,7 +11,7 @@ class StoreUserExperienceRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,11 @@ class StoreUserExperienceRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'company' => 'required',
+            'position_id' => 'required',
+            'description' => 'required',
+            'start_at' => 'required|date_format:Y-m-d',
+            'end_at' => 'nullable|date_format:Y-m-d',
         ];
     }
 }

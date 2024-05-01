@@ -8,6 +8,7 @@ use App\Http\Controllers\ReportingController;
 use App\Http\Controllers\UserAddressController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserEducationController;
+use App\Http\Controllers\UserExperienceController;
 use App\Http\Controllers\UserProfileController;
 use App\Http\Controllers\VacancyAssessmentController;
 use App\Http\Controllers\VacancyController;
@@ -52,6 +53,7 @@ Route::middleware([
     Route::resource('user-profile', UserProfileController::class)->only(['store']);
     Route::resource('user-address', UserAddressController::class)->only(['store']);
     Route::resource('user-education', UserEducationController::class)->only(['store', 'update', 'destroy']);
+    Route::resource('user-experience', UserExperienceController::class)->only(['store', 'update', 'destroy']);
     Route::get('/profile/{user?}', [ProfileController::class, 'index'])->name('profile.user');
     Route::put('/profile/update', [UserController::class, 'updateProfile'])->name('profile.update');
     Route::get('/vacancy/admin', [VacancyController::class, 'admin'])->name('vacancy.admin');
