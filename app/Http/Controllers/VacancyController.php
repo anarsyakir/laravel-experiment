@@ -8,6 +8,7 @@ use App\Http\Resources\AssessmentResource;
 use App\Http\Resources\CompanyResource;
 use App\Http\Resources\CriteriaResource;
 use App\Http\Resources\PositionResource;
+use App\Http\Resources\VacancyApplyResource;
 use App\Http\Resources\VacancyCollection;
 use App\Http\Resources\VacancyResource;
 use App\Models\Assessment;
@@ -34,6 +35,13 @@ class VacancyController extends Controller
     {
         return Inertia::render('Vacancy/Admin', [
             'vacancies' => new VacancyCollection(Vacancy::paginate(5))
+        ]);
+    }
+
+    public function apply(Vacancy $vacancy)
+    {
+        return Inertia::render('Vacancy/Apply', [
+            'vacancy' => new VacancyApplyResource($vacancy)
         ]);
     }
 

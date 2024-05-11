@@ -47,7 +47,7 @@ Route::middleware([
 
     Route::resource('users', UserController::class)->except(['edit', 'create', 'show']);
     Route::resource('vacancies', VacancyController::class);
-    Route::resource('applicants', ApplicantController::class)->except(['edit', 'create']);
+    Route::resource('applicants', ApplicantController::class)->except(['edit', 'create', 'store']);
     Route::resource('vacancy-assessment', VacancyAssessmentController::class)->only(['store', 'update', 'destroy']);
     Route::resource('assessment-criteria', AssessmentCriteriaController::class)->only(['store']);
     Route::resource('user-profile', UserProfileController::class)->only(['store']);
@@ -57,6 +57,8 @@ Route::middleware([
     Route::get('/profile/{user?}', [ProfileController::class, 'index'])->name('profile.user');
     Route::put('/profile/update', [UserController::class, 'updateProfile'])->name('profile.update');
     Route::get('/vacancy/admin', [VacancyController::class, 'admin'])->name('vacancy.admin');
+    Route::get('/vacancy/apply/{vacancy}', [VacancyController::class, 'apply'])->name('vacancy.apply');
+    Route::put('/applicant/apply', [ApplicantController::class, 'apply'])->name('applicant.apply');
     Route::get('/applicant/admin/{vacancy}', [ApplicantController::class, 'admin'])->name('applicant.admin');
     Route::get('/applicant/show/{applicant}', [ApplicantController::class, 'showAdmin'])->name('applicant.show.admin');
     Route::get('/reporting', [ReportingController::class, 'index'])->name('report.index');

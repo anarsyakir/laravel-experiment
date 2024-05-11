@@ -13,6 +13,8 @@ class CriteriaResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'reference_type' => $this->reference_type,
+            'config' => $this->config,
             'reference' => $this->reference,
         ];
     }

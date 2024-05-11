@@ -149,4 +149,17 @@ class Vacancy extends Model
     {
         return $this->isAssessmentExist() && $this->isAssessmentCriteriaExist() && $this->isAssessmentWeightValid() && $this->isAssessmentCriteriaWeightValid();
     }
+
+    public function criteriaNeedInput()
+    {
+        $collection = collect();
+        foreach($this->assessments()->get() as $assessment){
+            foreach($assessment->criterias as $criteria){
+                if($criteria->criteria->reference_type == 2){
+                    $collection->push($criteria->criteria);
+                }
+            }
+        }
+        return $collection;
+    }
 }

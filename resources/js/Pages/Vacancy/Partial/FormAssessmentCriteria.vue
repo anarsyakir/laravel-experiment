@@ -52,6 +52,7 @@ const form = useForm({
     weight: '',
     publish: '',
     reference: [],
+    additional: [],
 });
 
 const formVacancy = useForm({
@@ -131,6 +132,7 @@ const onAssessmentChange = (e) => {
 const onCriteriaChange = (e) => {
     const selectedOption = e.target.options[e.target.selectedIndex];
     const name = selectedOption.getAttribute('data-reference');
+    const config = selectedOption.getAttribute('data-config');
     if(name){
         axios.post(route('reference', {name: name}))
         .then((response) => {
@@ -139,6 +141,13 @@ const onCriteriaChange = (e) => {
     } else {
         reference.value = [];
         form.reference = [];
+    }
+
+    if(config){
+        const conf = JSON.parse(config);
+        for (var i=0; i<conf.length; i++) {
+            const inputE = document.createElement()
+        }
     }
 }
 
@@ -263,7 +272,7 @@ onMounted(() => {
                 >
                     <option value="">Choose criteria</option>
                     <template v-for="criteria in criterias">
-                        <option :data-reference="criteria.reference" :value="criteria.id">{{ criteria.name }}</option>
+                        <option :data-config="criteria.config" :data-reference="criteria.reference" :value="criteria.id">{{ criteria.name }}</option>
                     </template>
                 </SelectInput>
                 <InputError class="mt-2" :message="form.errors.vacancy_assessment_id" />
@@ -315,6 +324,9 @@ onMounted(() => {
                     <option value="">Choose reference</option>
                 </select>
                 <InputError class="mt-2" :message="form.errors.reference" />
+            </div>
+            <div id="additional">
+
             </div>
         </template>
     </Form>

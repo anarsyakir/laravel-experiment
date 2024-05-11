@@ -11,13 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('criterias', function (Blueprint $table) {
+        Schema::create('applicant_documents', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('name');
-            $table->integer('reference_type')->nullable();
-            $table->string('reference')->nullable();
-            $table->string('lookup')->nullable();
-            $table->json('config')->nullable();
+            $table->foreignUuid('applicant_id')->index()->constrained('applicants');
+            $table->foreignUuid('criteria_id')->index()->constrained('criterias');
+            $table->string('value');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -28,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('criterias');
+        Schema::dropIfExists('applicant_documents');
     }
 };

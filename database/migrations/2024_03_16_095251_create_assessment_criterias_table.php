@@ -21,6 +21,7 @@ return new class extends Migration
             $table->integer('weight');
             $table->boolean('publish');
             $table->json('reference')->nullable();
+            $table->json('additional')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

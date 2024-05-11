@@ -5,6 +5,7 @@ import PrimaryButton from '@/Components/Flowbite/Button/Primary.vue';
 import FlowbiteLayout from '@/Layouts/FlowbiteLayout.vue';
 import Header from '@/Components/Flowbite/Header.vue';
 import Pagination from '@/Components/Flowbite/Table/Pagination.vue';
+import { router } from '@inertiajs/vue3';
 
 const props = defineProps({
     vacancies: Object
@@ -14,6 +15,10 @@ const breadcrumb = [
     {name: "Home", href:route('dashboard')},
     {name: "Vacancy", href:null},
 ];
+
+const toApply = (id) => {
+    router.get(route('vacancy.apply', { vacancy : id}));
+}
 
 </script>
 <template>
@@ -37,7 +42,7 @@ const breadcrumb = [
                 </dl>
             </template>
             <template #button>
-                <PrimaryButton>Apply</PrimaryButton>
+                <PrimaryButton @click="toApply(vacancy.id)">Apply</PrimaryButton>
             </template>
         </Card>
         <Card>

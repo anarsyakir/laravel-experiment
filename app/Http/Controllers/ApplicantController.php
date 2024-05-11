@@ -7,8 +7,12 @@ use App\Http\Requests\UpdateApplicantRequest;
 use App\Http\Resources\ApplicantCollection;
 use App\Http\Resources\ApplicantResource;
 use App\Models\Applicant;
+use App\Models\ApplicantDocument;
 use App\Models\Vacancy;
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class ApplicantController extends Controller
@@ -37,9 +41,34 @@ class ApplicantController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreApplicantRequest $request)
+    public function apply(StoreApplicantRequest $request)
     {
-        //
+        $applicant = Applicant::create([
+            'vacancy_id' => $request->vacancy_id,
+            'user_id' => auth()->user()->id,
+        ]);
+
+        $criteriaInputs = $request->all();
+        foreach($criteriaInputs as $key => $input){
+            if($key != 'vacancy_id' && $key != '_method'){
+                $key = str_replace('_', '-', $key);
+                $value = $input;
+                if($input instanceof UploadedFile){
+                    $path = '/documents/'.$request->vacancy_id.'/'.$applicant->id.'/';
+                    $fullpath = $path . $key . '.' . $input->clientExtension();
+                    $input->storeAs($fullpath);
+                    $value = $fullpath;
+                }
+
+                ApplicantDocument::create([
+                    'applicant_id' => $applicant->id,
+                    'criteria_id' => $key,
+                    'value' => $value
+                ]);
+            }
+        }
+
+        return to_route('vacancies.index');
     }
 
     /**

@@ -16,6 +16,10 @@ return new class extends Migration
             $table->uuid('user_id')->index();
             $table->foreign('user_id')->references('id')->on('users');
             $table->string('address_line');
+            $table->string('country')->nullable();
+            $table->string('province')->nullable();
+            $table->string('city')->nullable();
+            $table->string('district')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
