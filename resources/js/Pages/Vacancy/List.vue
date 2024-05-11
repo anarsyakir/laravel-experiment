@@ -11,6 +11,8 @@ const props = defineProps({
     vacancies: Object
 });
 
+console.log(props.vacancies);
+
 const breadcrumb = [
     {name: "Home", href:route('dashboard')},
     {name: "Vacancy", href:null},
@@ -42,7 +44,8 @@ const toApply = (id) => {
                 </dl>
             </template>
             <template #button>
-                <PrimaryButton @click="toApply(vacancy.id)">Apply</PrimaryButton>
+                <PrimaryButton v-if="!vacancy.is_applied" @click="toApply(vacancy.id)">Apply</PrimaryButton>
+                <PrimaryButton v-else :disabled="true">Applied</PrimaryButton>
             </template>
         </Card>
         <Card>

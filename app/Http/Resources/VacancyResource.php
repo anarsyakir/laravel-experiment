@@ -31,7 +31,8 @@ class VacancyResource extends JsonResource
             'assessments_weight' => $this->assessments->sum('weight'),
             'status' => $this->status_name,
             'status_code' => $this->status,
-            'is_valid' => $this->isValid()
+            'is_valid' => $this->isValid(),
+            'is_applied' => $this->isApplied()
         ];
     }
 }

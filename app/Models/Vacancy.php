@@ -54,6 +54,11 @@ class Vacancy extends Model
         return $this->hasMany(VacancyAssessment::class);
     }
 
+    public function applicants(): HasMany
+    {
+        return $this->hasMany(Applicant::class);
+    }
+
     public function publishedCriteria()
     {
         $collection = collect();
@@ -161,5 +166,14 @@ class Vacancy extends Model
             }
         }
         return $collection;
+    }
+
+    public function isApplied(): bool
+    {
+        if($this->applicants->where('user_id', auth()->user()->id)->first()){
+            return true;
+        }
+
+        return false;
     }
 }
